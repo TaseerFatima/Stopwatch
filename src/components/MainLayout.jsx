@@ -1,130 +1,176 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Box, Typography, Stack } from "@mui/material";
-import StartButton from "./StartButton";
-import StopButton from "./StopButton";
 import LapButton from "./LapButton";
 import ResetButton from "./ResetButton";
+import StartStopButton from "./StartStopButton";
+import {
+  DemoBox,
+  DemoPaper,
+  StopwatchTypography,
+  LapsBox,
+  StopwatchBox,
+  LapTypography,
+  LapMilliseconds,
+  LapIndex,
+  StackControls,
+  MillisecondTypography,
+} from "./StyledComponent";
 
 const MainLayout = () => {
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
-  const intervalRef = useRef(null);
   const [laps, setLaps] = useState([]);
+  const startTimeRef = useRef(null);
+  const savedTimeRef = useRef(0);
+  const intervalRef = useRef(null);
+  const lapsEndRef = useRef(null);
 
+  //   stopwatch Time
   useEffect(() => {
     if (running) {
+      startTimeRef.current = Date.now() - savedTimeRef.current;
       intervalRef.current = setInterval(() => {
-        setTime((prev) => prev + 10);
+        setTime(Date.now() - startTimeRef.current);
       }, 10);
-    } else if (intervalRef.current) {
+    } else {
       clearInterval(intervalRef.current);
+      savedTimeRef.current = time;
     }
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
+    return () => clearInterval(intervalRef.current);
   }, [running]);
 
+  //   laps
+  useEffect(() => {
+    if (lapsEndRef.current) {
+      lapsEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [laps]);
+
+  //   handle Events
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        if (running) {
+          setRunning(false);
+        } else {
+          setRunning(true);
+        }
+      }
+
+      if (e.code === "Enter" && running) {
+        e.preventDefault();
+        setLaps((prev) => [...prev, time]);
+      }
+
+      if (e.code === "Backspace") {
+        e.preventDefault();
+        setRunning(false);
+        setTime(0);
+        setLaps([]);
+        savedTimeRef.current = 0;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [running, time]);
+
+//   timeformat
   const formatTime = (t) => {
     const minutes = Math.floor(t / 60000);
     const seconds = Math.floor((t % 60000) / 1000);
-    const milliseconds = Math.floor((t % 1000) / 10);
     return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
       2,
       "0"
-    )}:${String(milliseconds).padStart(2, "0")}`;
+    )}`;
+  };
+  const millisecond = (t) => {
+    const ms = Math.floor(t % 1000);
+    return `.${String(ms).padStart(3, "0")}`;
   };
 
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        bgcolor: "#707070",
-      }}
-    >
-      <Box
+    <DemoBox>
+      <DemoPaper
+        square={false}
         sx={{
-          width: { xs: "100%", sm: "90%", md: "70%", lg: "70%" },
-          maxWidth: 1000,
-          height: 570,
-          borderRadius: 1,
-          bgcolor: "black",
-          boxShadow: 3,
+          width: { xs: "100%", sm: "90%", md: "70%" },
           p: { xs: 2, sm: 3, md: 4 },
         }}
       >
         {/* Stopwatch Time */}
-        <Box
-          sx={{
-            width: "80%",
-            height: { xs: 60, sm: 80, md: 100 },
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-             mt: { xs: 8, sm: 10, md: 12 },
-            borderRadius: 1,
-            outline: 7,
-            outlineColor: "#f40006",
-            mx: " auto",
-             boxShadow: "0 0 45px 17px #f40006", 
-          }}
-        >
-          <Typography
+        <StopwatchBox sx={{ width: { xs: "100%", sm: "90%", md: "70%" } }}>
+          <Box
             sx={{
-              fontSize: { xs: "28px", sm: "40px", md: "50px" },
-              fontWeight: 600,
-              color: "#f40006",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "baseline",
             }}
           >
-            {formatTime(time)}
-          </Typography>
-        </Box>
+            <StopwatchTypography
+              sx={{
+                fontSize: { xs: "80px", sm: "100px", md: "130px" },
+                lineHeight: 1,
+              }}
+            >
+              {formatTime(time)}
+            </StopwatchTypography>
+            <MillisecondTypography
+              sx={{
+                fontSize: { xs: "40px", sm: "50px", md: "50px" },
+              }}
+            >
+              {millisecond(time)}
+            </MillisecondTypography>
+          </Box>
+        </StopwatchBox>
 
         {/* Controls */}
-        <Stack
+        <StackControls
           direction={{ xs: "column", sm: "row" }}
           spacing={3}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            mt: { xs: 5, sm: 7 },
-          }}
+          sx={{mt: { xs: 5, sm: 4, md: 3 }}}
         >
-          <StartButton onStart={() => setRunning(true)} />
-          <StopButton onStop={() => setRunning(false)} />
-          <LapButton onLap={() => setLaps((prevLaps) => [...prevLaps, time])} />
-          <ResetButton
-            onReset={() => {
-              setRunning(false);
-              setTime(0);
-            }}
+          <StartStopButton
+            running={running}
+            onStart={() => setRunning(true)}
+            onStop={() => setRunning(false)}
           />
-        </Stack>
 
-    {/* laps list */}
-        <Box
+          <Stack direction="row" spacing={3} sx={{ justifyContent: "center" }}>
+            <LapButton
+              onLap={() => setLaps((prevLaps) => [...prevLaps, time])}
+            />
+            <ResetButton
+              onReset={() => {
+                setRunning(false);
+                setTime(0);
+                setLaps([]);
+                savedTimeRef.current = 0;
+              }}
+            />
+          </Stack>
+        </StackControls>
+
+        {/* laps list */}
+        <LapsBox
           sx={{
-           mt: { xs: 3, sm: 4 },
-            textAlign: "center",
-            color: "#808080",
-            overflow: "auto",
-           maxHeight: { xs: 150, sm: 200 },
-            width: "100%",
-            mx:"auto"
+            mt: { xs: 6, sm: 5 },
+            maxHeight: { xs: 150, sm: 200 },
           }}
         >
           {laps.map((lapTime, index) => (
-            <Typography key={index}>
-              Lap {index + 1}: {formatTime(lapTime)}
-            </Typography>
+            <LapTypography key={index}>
+              <LapIndex>{index + 1}: </LapIndex>
+              {formatTime(lapTime)}
+              <LapMilliseconds>{millisecond(lapTime)}</LapMilliseconds>
+            </LapTypography>
           ))}
-        </Box>
-      </Box>
-    </Box>
+          <Box ref={lapsEndRef} />
+        </LapsBox>
+      </DemoPaper>
+    </DemoBox>
   );
 };
 

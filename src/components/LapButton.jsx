@@ -1,23 +1,22 @@
 import React from "react";
-import Button from "@mui/material/Button";
+import {
+ Buttons
+} from "./StyledComponent";
 
 const LapButton = ({onLap}) => {
 
   return (
     <>
-      <Button
-        onClick={onLap}
-        sx={{
-          color: "#808080",
-          width: { xs: 100, sm: 120, md: 140 },
-          outline: 4,
-          outlineColor: "#f40006",
-          fontWeight: 600,
-          fontSize: "18px",
+      <Buttons
+        onClick={onLap}  
+        variant="contained"
+        sx={{ 
+          width: { xs: 140, sm: 120, md: 140 },
+          ml:0
         }}
       >
         Lap
-      </Button>
+      </Buttons>
       
 
     </>
