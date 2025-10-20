@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Box, Typography, Stack } from "@mui/material";
+import { Box, Stack, Button } from "@mui/material";
 import LapButton from "./LapButton";
 import ResetButton from "./ResetButton";
 import StartStopButton from "./StartStopButton";
@@ -24,8 +24,11 @@ const MainLayout = () => {
   const savedTimeRef = useRef(0);
   const intervalRef = useRef(null);
   const lapsEndRef = useRef(null);
+  const [darkMode, setDarkMode] = useState(true);
 
-  //   stopwatch Time
+  const toggleTheme = () => setDarkMode(!darkMode);
+
+  //  Stopwatch logic
   useEffect(() => {
     if (running) {
       startTimeRef.current = Date.now() - savedTimeRef.current;
@@ -39,30 +42,24 @@ const MainLayout = () => {
     return () => clearInterval(intervalRef.current);
   }, [running]);
 
-  //   laps
+  //  laps
   useEffect(() => {
     if (lapsEndRef.current) {
       lapsEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [laps]);
 
-  //   handle Events
+  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.code === "Space") {
         e.preventDefault();
-        if (running) {
-          setRunning(false);
-        } else {
-          setRunning(true);
-        }
+        setRunning((prev) => !prev);
       }
-
-      if (e.code === "Enter" && running) {
+      if (e.code === "Enter") {
         e.preventDefault();
         setLaps((prev) => [...prev, time]);
       }
-
       if (e.code === "Backspace") {
         e.preventDefault();
         setRunning(false);
@@ -72,11 +69,11 @@ const MainLayout = () => {
       }
     };
 
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
+    addEventListener("keydown", handleKeyPress);
+    return () => removeEventListener("keydown", handleKeyPress);
   }, [running, time]);
 
-//   timeformat
+  //  Format time
   const formatTime = (t) => {
     const minutes = Math.floor(t / 60000);
     const seconds = Math.floor((t % 60000) / 1000);
@@ -85,33 +82,58 @@ const MainLayout = () => {
       "0"
     )}`;
   };
+
   const millisecond = (t) => {
     const ms = Math.floor(t % 1000);
     return `.${String(ms).padStart(3, "0")}`;
   };
 
   return (
-    <DemoBox>
+    <DemoBox
+      sx={{
+        position: "relative",
+        backgroundColor: darkMode ? "#1e293b" : "#f8fafc",
+        color: darkMode ? "#e2e8f0" : "#0f172a",
+      }}
+    >
+       {/* Light/Dark Toggle  */}
+      <Button
+        variant="contained"
+        onClick={toggleTheme}
+        sx={{
+          position: "absolute",
+          top: 20,
+          right: 20,
+          zIndex: 2,
+          backgroundColor: darkMode ? "#38bdf8" : "#0f172a",
+          "&:hover": { backgroundColor: darkMode ? "#0ea5e9" : "#1e293b" },
+        }}
+      >
+        {darkMode ? "Light Mode" : "Dark Mode"}
+      </Button>
+
       <DemoPaper
         square={false}
         sx={{
           width: { xs: "100%", sm: "90%", md: "70%" },
           p: { xs: 2, sm: 3, md: 4 },
+          backgroundColor: darkMode ? "#0f172a" : "#ffffff",
+          color: darkMode ? "#e2e8f0" : "#0f172a",
         }}
       >
-        {/* Stopwatch Time */}
+        {/* Stopwatch Display */}
         <StopwatchBox sx={{ width: { xs: "100%", sm: "90%", md: "70%" } }}>
           <Box
             sx={{
               display: "flex",
               justifyContent: "center",
               alignItems: "baseline",
+              fontFamily: "montserrat",
             }}
           >
             <StopwatchTypography
               sx={{
                 fontSize: { xs: "80px", sm: "100px", md: "130px" },
-                lineHeight: 1,
               }}
             >
               {formatTime(time)}
@@ -130,18 +152,15 @@ const MainLayout = () => {
         <StackControls
           direction={{ xs: "column", sm: "row" }}
           spacing={3}
-          sx={{mt: { xs: 5, sm: 4, md: 3 }}}
+          sx={{ mt: { xs: 5, sm: 4, md: 3 } }}
         >
           <StartStopButton
             running={running}
             onStart={() => setRunning(true)}
             onStop={() => setRunning(false)}
           />
-
           <Stack direction="row" spacing={3} sx={{ justifyContent: "center" }}>
-            <LapButton
-              onLap={() => setLaps((prevLaps) => [...prevLaps, time])}
-            />
+            <LapButton onLap={() => setLaps((prev) => [...prev, time])} />
             <ResetButton
               onReset={() => {
                 setRunning(false);
@@ -153,16 +172,17 @@ const MainLayout = () => {
           </Stack>
         </StackControls>
 
-        {/* laps list */}
+        {/* Laps List */}
         <LapsBox
           sx={{
             mt: { xs: 6, sm: 5 },
             maxHeight: { xs: 150, sm: 200 },
+            width: { xs: "70%", sm: "60%", md: "35%" },
           }}
         >
           {laps.map((lapTime, index) => (
             <LapTypography key={index}>
-              <LapIndex>{index + 1}: </LapIndex>
+              <LapIndex>{index + 1}:</LapIndex>
               {formatTime(lapTime)}
               <LapMilliseconds>{millisecond(lapTime)}</LapMilliseconds>
             </LapTypography>

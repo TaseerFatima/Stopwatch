@@ -13,7 +13,6 @@ const ResetButton = ({onReset}) => {
         sx={{ 
            width: { xs: 140, sm: 120, md: 140 },
         }}
-      
       >
         Reset
       </Buttons>

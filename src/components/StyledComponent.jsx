@@ -6,31 +6,28 @@ export const DemoBox = styled(Box)(() => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  backgroundColor: "#1e293b",
 }));
 
-export const DemoPaper = styled(Paper)(({ theme }) => ({
+export const DemoPaper = styled(Paper)(() => ({
   maxWidth: 800,
   height: 470,
-  backgroundColor: "#0f172a",
-  boxShadow: "0 8px 30px rgba(0,0,0,0.4)",
-  border: "1px solid rgba(255,255,255,0.2)",
-  ...theme.typography.body2,
   textAlign: "center",
 }));
 
 export const StopwatchTypography = styled(Typography)(() => ({
-  color: "#e2e8f0",
+  fontFamily: "monospace",
+  lineHeight: 1,
 }));
-
 export const LapsBox = styled(Box)(() => ({
   textAlign: "center",
   color: "#e2e8f0",
   overflowY: "auto",
-  width: "100%",
-  mx: "auto",
-  height: 160,
+  margin: "0 auto",
+  height: 180,
   scrollbarWidth: "none",
+  backgroundColor: "#1e293b",
+  boxShadow: "0 8px 30px rgba(0,0,0,0.4)",
+ border: "1px solid rgba(255,255,255,0.1)",
 }));
 
 export const Buttons = styled(Button)(() => ({
@@ -46,7 +43,7 @@ export const StopwatchBox = styled(Box)(() => ({
   display: "inline-block",
   fontFamily: "monospace",
   textAlign: "center",
-  mx: "auto",
+  margin: "auto",
 }));
 
 export const LapTypography = styled(Typography)(() => ({
@@ -63,7 +60,7 @@ export const LapMilliseconds = styled("span")(() => ({
 }));
 
 export const LapIndex = styled("span")(() => ({
-  fontWeight: 600,
+  fontWeight: 800,
   color: "#ffffff",
   marginRight: "8px",
 }));
@@ -72,7 +69,7 @@ export const StackControls = styled(Stack)(() => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  mx: "auto",
+  margin: "auto",
 }));
 
 export const MillisecondTypography = styled(Typography)(() => ({
