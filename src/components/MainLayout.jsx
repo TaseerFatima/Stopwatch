@@ -117,7 +117,7 @@ const MainLayout = () => {
         sx={{
           width: { xs: "100%", sm: "100%", md: "100%" },
           height: { xs: "40%", sm: "90%", md: "100%" },
-          p: { xs: 2, sm: 3, md: 4 },
+          p: { xs: 6, sm: 3, md: 4 },
           backgroundColor: darkMode ? "#0f172a" : "#ffffff",
           color: darkMode ? "#e2e8f0" : "#0f172a",
         }}
@@ -178,6 +178,7 @@ const MainLayout = () => {
           sx={{
             mt: { xs: 6, sm: 5 },
             mx: { xs: "auto", sm: "auto", md: 0 },
+            p: { xs: 6, sm: 3, md: 4 },
             maxHeight: { xs: 150, sm: 200 },
             width: { xs: "100%", sm: "100%", md: "100%" },
             display:"grid",
