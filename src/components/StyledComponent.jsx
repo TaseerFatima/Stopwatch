@@ -21,7 +21,7 @@ export const StopwatchTypography = styled(Typography)(() => ({
   lineHeight: 1,
 }));
 export const LapsBox = styled(Box)(() => ({
-  gap:10,
+  gap:20,
   overflowY: "auto",
   padding:12,
   height: 180,

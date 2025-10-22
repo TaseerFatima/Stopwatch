@@ -179,11 +179,11 @@ const MainLayout = () => {
           sx={{
             mt: { xs: 4, sm: 5 },
             mx: { xs: "auto", sm: "auto", md: 0 },
-            px: { xs: 12, sm: 6, md: 4 },
-            maxHeight: { xs: 150, sm: 200 },
+            p: { xs: 2, sm: 6, md: 4 },
+            maxHeight: { xs: 180, sm: 200 },
             width: { xs: "100%", sm: "100%", md: "100%" },
             display:"grid",
-            gridTemplateColumns: { xs: "1fr",sm:"repeat(2, 1fr)" , md: "repeat(3, 1fr)" }, 
+            gridTemplateColumns: {xs:"repeat(2, 1fr)" , md: "repeat(3, 1fr)" }, 
              backgroundColor: darkMode ? "#0f172a" : "#ffffff",
           color: darkMode ? "#e2e8f0" : "#0f172a",
         }}
