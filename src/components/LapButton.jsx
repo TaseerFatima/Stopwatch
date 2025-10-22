@@ -11,7 +11,7 @@ const LapButton = ({onLap}) => {
         onClick={onLap}  
         variant="contained"
         sx={{ 
-          width: { xs: 150, sm: 120, md: 150 },
+          width: { xs: 150, sm: 120, md: 160 },
           ml:0
         }}
       >
