@@ -179,7 +179,7 @@ const MainLayout = () => {
           sx={{
             mt: { xs: 4, sm: 5 },
             mx: { xs: "auto", sm: "auto", md: 0 },
-            p: { xs: 4, sm: 3, md: 4 },
+            px: { xs: 12, sm: 6, md: 4 },
             maxHeight: { xs: 150, sm: 200 },
             width: { xs: "100%", sm: "100%", md: "100%" },
             display:"grid",

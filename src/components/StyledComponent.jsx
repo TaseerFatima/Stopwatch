@@ -21,7 +21,7 @@ export const StopwatchTypography = styled(Typography)(() => ({
   lineHeight: 1,
 }));
 export const LapsBox = styled(Box)(() => ({
-  gap:22,
+  gap:10,
   overflowY: "auto",
   padding:12,
   height: 180,
@@ -50,7 +50,7 @@ export const LapTypography = styled(Typography)(() => ({
   fontSize: "26px",
   fontWeight: 500,
   // color: "#e2e8f0",
-  marginBottom: "2px",
+
 }));
 
 export const LapMilliseconds = styled("span")(() => ({
