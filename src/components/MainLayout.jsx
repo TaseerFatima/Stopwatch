@@ -123,7 +123,8 @@ const MainLayout = () => {
         }}
       >
         {/* Stopwatch Display */}
-        <StopwatchBox sx={{ width: { xs: "100%", sm: "90%", md: "70%" } }}>
+        <StopwatchBox sx={{ width: { xs: "90%", sm: "80%", md: "70%" },mx: "auto",
+    textAlign: "center",}}>
           <Box
             sx={{
               display: "flex",
