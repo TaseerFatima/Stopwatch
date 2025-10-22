@@ -8,7 +8,7 @@ const StartStopButton = ({ running, onStart, onStop }) => {
       onClick={running ? onStop : onStart}
       variant="contained"
       sx={{
-        width: { xs: 300, sm: 120, md: 140 },
+        width: { xs: 300, sm: 120, md: 180 },
         backgroundColor: running ? "#F54545" : "#43a047", 
         "&:hover": {
           backgroundColor: running ? "#c62828" : "#2e7d32",

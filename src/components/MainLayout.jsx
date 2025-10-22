@@ -111,11 +111,12 @@ const MainLayout = () => {
       >
         {darkMode ? "Light Mode" : "Dark Mode"}
       </Button>
-
+        <Stack direction="column"> 
       <DemoPaper
         square={false}
         sx={{
-          width: { xs: "100%", sm: "90%", md: "70%" },
+          width: { xs: "100%", sm: "100%", md: "100%" },
+          height: { xs: "40%", sm: "90%", md: "100%" },
           p: { xs: 2, sm: 3, md: 4 },
           backgroundColor: darkMode ? "#0f172a" : "#ffffff",
           color: darkMode ? "#e2e8f0" : "#0f172a",
@@ -138,7 +139,7 @@ const MainLayout = () => {
             >
               {formatTime(time)}
             </StopwatchTypography>
-            <MillisecondTypography
+            <MillisecondTypography 
               sx={{
                 fontSize: { xs: "40px", sm: "50px", md: "50px" },
               }}
@@ -147,7 +148,7 @@ const MainLayout = () => {
             </MillisecondTypography>
           </Box>
         </StopwatchBox>
-
+          </DemoPaper>
         {/* Controls */}
         <StackControls
           direction={{ xs: "column", sm: "row" }}
@@ -173,15 +174,17 @@ const MainLayout = () => {
         </StackControls>
 
         {/* Laps List */}
-        <LapsBox
+        <LapsBox darkMode={darkMode}
           sx={{
             mt: { xs: 6, sm: 5 },
             maxHeight: { xs: 150, sm: 200 },
-            width: { xs: "70%", sm: "60%", md: "35%" },
-          }}
+            width: { xs: "100%", sm: "100%", md: "100%" },
+             backgroundColor: darkMode ? "#0f172a" : "#ffffff",
+          color: darkMode ? "#e2e8f0" : "#0f172a",
+        }}
         >
           {laps.map((lapTime, index) => (
-            <LapTypography key={index}>
+            <LapTypography key={index}>  
               <LapIndex>{index + 1}:</LapIndex>
               {formatTime(lapTime)}
               <LapMilliseconds>{millisecond(lapTime)}</LapMilliseconds>
@@ -189,7 +192,7 @@ const MainLayout = () => {
           ))}
           <Box ref={lapsEndRef} />
         </LapsBox>
-      </DemoPaper>
+     </Stack>
     </DemoBox>
   );
 };
