@@ -177,9 +177,9 @@ const MainLayout = () => {
         {/* Laps List */}
         <LapsBox darkMode={darkMode}
           sx={{
-            mt: { xs: 6, sm: 5 },
+            mt: { xs: 4, sm: 5 },
             mx: { xs: "auto", sm: "auto", md: 0 },
-            p: { xs: 6, sm: 3, md: 4 },
+            p: { xs: 4, sm: 3, md: 4 },
             maxHeight: { xs: 150, sm: 200 },
             width: { xs: "100%", sm: "100%", md: "100%" },
             display:"grid",
