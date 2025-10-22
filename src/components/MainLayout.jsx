@@ -134,7 +134,7 @@ const MainLayout = () => {
           >
             <StopwatchTypography
               sx={{
-                fontSize: { xs: "80px", sm: "100px", md: "130px" },
+                fontSize: { xs: "60px", sm: "100px", md: "130px" },
               }}
             >
               {formatTime(time)}
