@@ -111,7 +111,7 @@ const MainLayout = () => {
       >
         {darkMode ? "Light Mode" : "Dark Mode"}
       </Button>
-        <Stack direction="column"> 
+        <Stack direction="column" > 
       <DemoPaper
         square={false}
         sx={{
@@ -177,8 +177,11 @@ const MainLayout = () => {
         <LapsBox darkMode={darkMode}
           sx={{
             mt: { xs: 6, sm: 5 },
+            mx: { xs: "auto", sm: "auto", md: 0 },
             maxHeight: { xs: 150, sm: 200 },
             width: { xs: "100%", sm: "100%", md: "100%" },
+            display:"grid",
+            gridTemplateColumns: { xs: "1fr",sm:"repeat(2, 1fr)" , md: "repeat(3, 1fr)" }, 
              backgroundColor: darkMode ? "#0f172a" : "#ffffff",
           color: darkMode ? "#e2e8f0" : "#0f172a",
         }}

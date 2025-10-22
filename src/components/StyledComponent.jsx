@@ -4,12 +4,14 @@ import { Box, Typography, Paper, Button, Stack } from "@mui/material";
 export const DemoBox = styled(Box)(() => ({
   height: "100vh",
   display: "flex",
+  overflowY: "auto",
+  padding: "16px",
   justifyContent: "center",
   alignItems: "center",
 }));
 
 export const DemoPaper = styled(Paper)(() => ({
-  maxWidth: 800,
+  maxWidth: "100%",
   maxHeight: 180,
   textAlign: "center",
 }));
@@ -19,8 +21,6 @@ export const StopwatchTypography = styled(Typography)(() => ({
   lineHeight: 1,
 }));
 export const LapsBox = styled(Box)(() => ({
-  display:"grid",
-  gridTemplateColumns: "repeat(3, 1fr)",
   gap:22,
   overflowY: "auto",
   padding:12,

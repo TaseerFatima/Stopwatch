@@ -11,7 +11,7 @@ const ResetButton = ({onReset}) => {
        onClick={onReset}
         variant="contained"
         sx={{ 
-           width: { xs: 140, sm: 120, md: 150 },
+           width: { xs: 160, sm: 120, md: 140 },
         }}
       >
         Reset
