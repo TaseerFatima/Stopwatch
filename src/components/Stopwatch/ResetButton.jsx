@@ -1,17 +1,14 @@
 import React from "react";
-import {
- Buttons
-} from "./StyledComponent";
+import { Buttons } from "./StyledComponent";
 
-const ResetButton = ({onReset}) => {
-
+const ResetButton = ({ onReset, sx }) => {
   return (
     <>
       <Buttons
-       onClick={onReset}
+        onClick={onReset}
         variant="contained"
-        sx={{ 
-           width: { xs: 160, sm: 120, md: 150 },
+        sx={{
+          ...sx,
         }}
       >
         Reset

@@ -8,6 +8,7 @@ export const DemoBox = styled(Box)(() => ({
   padding: "16px",
   justifyContent: "center",
   alignItems: "center",
+  position: "relative",
 }));
 
 export const DemoPaper = styled(Paper)(() => ({
@@ -49,8 +50,6 @@ export const StopwatchBox = styled(Box)(() => ({
 export const LapTypography = styled(Typography)(() => ({
   fontSize: "26px",
   fontWeight: 500,
-  // color: "#e2e8f0",
-
 }));
 
 export const LapMilliseconds = styled("span")(() => ({

@@ -1,22 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Box, Stack, Button } from "@mui/material";
+import { Box, Stack, Button, Tabs, Tab } from "@mui/material";
 import LapButton from "./LapButton";
 import ResetButton from "./ResetButton";
 import StartStopButton from "./StartStopButton";
 import {
   DemoBox,
-  DemoPaper,
-  StopwatchTypography,
-  LapsBox,
-  StopwatchBox,
-  LapTypography,
-  LapMilliseconds,
-  LapIndex,
   StackControls,
-  MillisecondTypography,
-} from "./StyledComponent";
+  LapsBox,
+  LapTypography,
+  LapIndex,
+  LapMilliseconds,
+} from "../Stopwatch/StyledComponent";
+import StopwatchTimer from "../StopwatchTimer";
+import { formatTime, millisecond } from "../../common/FormatTime";
 
-const MainLayout = () => {
+const MainLayout = ({ value, handleChange }) => {
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
   const [laps, setLaps] = useState([]);
@@ -73,21 +71,6 @@ const MainLayout = () => {
     return () => removeEventListener("keydown", handleKeyPress);
   }, [running, time]);
 
-  //  Format time
-  const formatTime = (t) => {
-    const minutes = Math.floor(t / 60000);
-    const seconds = Math.floor((t % 60000) / 1000);
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
-  };
-
-  const millisecond = (t) => {
-    const ms = Math.floor(t % 1000);
-    return `.${String(ms).padStart(3, "0")}`;
-  };
-
   return (
     <DemoBox
       sx={{
@@ -96,7 +79,7 @@ const MainLayout = () => {
         color: darkMode ? "#e2e8f0" : "#0f172a",
       }}
     >
-       {/* Light/Dark Toggle  */}
+      {/* Light/Dark Toggle  */}
       <Button
         variant="contained"
         onClick={toggleTheme}
@@ -111,57 +94,63 @@ const MainLayout = () => {
       >
         {darkMode ? "Light Mode" : "Dark Mode"}
       </Button>
-        <Stack direction="column" > 
-      <DemoPaper
-        square={false}
-        sx={{
-          width: { xs: "100%", sm: "100%", md: "100%" },
-          height: { xs: "40%", sm: "90%", md: "100%" },
-          p: { xs: 6, sm: 3, md: 4 },
-          backgroundColor: darkMode ? "#0f172a" : "#ffffff",
-          color: darkMode ? "#e2e8f0" : "#0f172a",
-        }}
-      >
-        {/* Stopwatch Display */}
-        <StopwatchBox sx={{ width: { xs: "90%", sm: "80%", md: "70%" },mx: "auto",
-    textAlign: "center",}}>
-          <Box
+
+      <Stack direction="column">
+        {/* Tabs */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 8,
+            mb: { xs: 5, sm: 4, md: 3 },
+            width: "100%",
+          }}
+        >
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="Stopwatch and Timer Tabs"
+            variant="fullWidth"
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "baseline",
-              fontFamily: "montserrat",
+              width: { xs: "100%", sm: "100%", md: "100%" },
+              backgroundColor: darkMode ? "#0f172a" : "#ffffff",
+              borderRadius: "12px",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#38bdf8",
+                height: "3px",
+              },
+              "& .MuiTab-root": {
+                color: darkMode ? "#e2e8f0" : "#0f172a",
+                fontWeight: 600,
+                textTransform: "none",
+              },
+              "& .Mui-selected": {
+                color: "#38bdf8",
+              },
             }}
           >
-            <StopwatchTypography
-              sx={{
-                fontSize: { xs: "60px", sm: "100px", md: "130px" },
-              }}
-            >
-              {formatTime(time)}
-            </StopwatchTypography>
-            <MillisecondTypography 
-              sx={{
-                fontSize: { xs: "40px", sm: "50px", md: "50px" },
-              }}
-            >
-              {millisecond(time)}
-            </MillisecondTypography>
-          </Box>
-        </StopwatchBox>
-          </DemoPaper>
+            <Tab value="MainLayout" label="Stopwatch" />
+            <Tab value="TimerLayout" label="Timer" />
+          </Tabs>
+        </Box>
+
+        {/* Timer */}
+        <StopwatchTimer time={time} darkMode={darkMode} />
+
         {/* Controls */}
         <StackControls
           direction={{ xs: "column", sm: "row" }}
-          spacing={3}
+          spacing={2}
           sx={{ mt: { xs: 5, sm: 4, md: 3 } }}
         >
           <StartStopButton
             running={running}
             onStart={() => setRunning(true)}
             onStop={() => setRunning(false)}
+            sx={{ width: { xs: 340, sm: 200, md: 190 } }}
           />
-          <Stack direction="row" spacing={3} sx={{ justifyContent: "center" }}>
+          <Stack direction="row" spacing={2} sx={{ justifyContent: "center" }}>
             <LapButton onLap={() => setLaps((prev) => [...prev, time])} />
             <ResetButton
               onReset={() => {
@@ -170,26 +159,28 @@ const MainLayout = () => {
                 setLaps([]);
                 savedTimeRef.current = 0;
               }}
+              sx={{ width: { xs: 160, sm: 120, md: 150 } }}
             />
           </Stack>
         </StackControls>
 
         {/* Laps List */}
-        <LapsBox darkMode={darkMode}
+        <LapsBox
+          darkMode={darkMode}
           sx={{
-            mt: { xs: 4, sm: 5 },
-            mx: { xs: "auto", sm: "auto", md: 0 },
+            mt: { xs: 5, sm: 4, md: 3 },
+            mx: "auto",
             p: { xs: 2, sm: 6, md: 4 },
             maxHeight: { xs: 180, sm: 200 },
             width: { xs: "100%", sm: "100%", md: "100%" },
-            display:"grid",
-            gridTemplateColumns: {xs:"repeat(2, 1fr)" , md: "repeat(3, 1fr)" }, 
-             backgroundColor: darkMode ? "#0f172a" : "#ffffff",
-          color: darkMode ? "#e2e8f0" : "#0f172a",
-        }}
+            display: "grid",
+            gridTemplateColumns: { xs: "repeat(2, 1fr)", md: "repeat(3, 1fr)" },
+            backgroundColor: darkMode ? "#0f172a" : "#ffffff",
+            color: darkMode ? "#e2e8f0" : "#0f172a",
+          }}
         >
           {laps.map((lapTime, index) => (
-            <LapTypography key={index}>  
+            <LapTypography key={index}>
               <LapIndex>{index + 1}:</LapIndex>
               {formatTime(lapTime)}
               <LapMilliseconds>{millisecond(lapTime)}</LapMilliseconds>
@@ -197,7 +188,7 @@ const MainLayout = () => {
           ))}
           <Box ref={lapsEndRef} />
         </LapsBox>
-     </Stack>
+      </Stack>
     </DemoBox>
   );
 };
